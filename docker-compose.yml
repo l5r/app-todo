@@ -25,6 +25,7 @@ services:
   # Your extra services here
   registration:
     image: semtech/mu-registration-service:2.8.0
+
   login:
     image: semtech/mu-login-service:3.0.0
 

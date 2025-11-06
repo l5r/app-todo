@@ -36,7 +36,7 @@
              (account :via ,(s-prefix "foaf:made")
                       :inverse t
                       :as "owner"))
-  :resource-base (s-prefix "todo:todo-item/")
+  :resource-base (s-url "http://todo.home.arpa/todo-items/")
   :on-path "todo-items")
 
 (define-resource todo-list ()
@@ -47,7 +47,7 @@
                       :as "owner"))
   :has-many `((todo-item :via ,(s-prefix "todo:items")
                          :as "items"))
-  :resource-base (s-prefix "todo:todo-list/")
+  :resource-base (s-url "http://todo.home.arpa/todo-lists/")
   :on-path "todo-lists")
 
 (define-resource account ()

@@ -9,11 +9,11 @@
 ;;;;;;;;;;;;;;;;;
 ;;; configuration
 (in-package :client)
-(setf *log-sparql-query-roundtrip* t) ; change nil to t for logging requests to virtuoso (and the response)
+(setf *log-sparql-query-roundtrip* nil) ; change nil to t for logging requests to virtuoso (and the response)
 (setf *backend* "http://triplestore:8890/sparql")
 
 (in-package :server)
-(setf *log-incoming-requests-p* t) ; change nil to t for logging all incoming requests
+(setf *log-incoming-requests-p* nil) ; change nil to t for logging all incoming requests
 
 ;;;;;;;;;;;;;;;;
 ;;; prefix types
@@ -58,14 +58,16 @@
 
 (define-graph todo ("http://mu.semte.ch/graphs/users/")
   ("todo:TodoItem"
+   -> "rdf:type"
+   -> "mu:uuid"
    -> "todo:title"
    -> "todo:completedAt"
-   -> "todo:deadline"
-   <- "foaf:made")
+   -> "todo:deadline")
   ("todo:TodoList"
+   -> "rdf:type"
+   -> "mu:uuid"
    -> "todo:title"
-   -> "todo:items"
-   <- "foaf:made"))
+   -> "todo:items"))
 
 ;; Example:
 ;; (define-graph company ("http://mu.semte.ch/graphs/companies/")
