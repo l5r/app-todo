@@ -1,15 +1,16 @@
 defmodule Dispatcher do
   use Matcher
-  define_accept_types [
-    html: [ "text/html", "application/xhtml+html" ],
-    json: [ "application/json", "application/vnd.api+json" ]
-  ]
+
+  define_accept_types(
+    html: ["text/html", "application/xhtml+html"],
+    json: ["application/json", "application/vnd.api+json"]
+  )
 
   @any %{}
-  @json %{ accept: %{ json: true } }
-  @html %{ accept: %{ html: true } }
+  @json %{accept: %{json: true}}
+  @html %{accept: %{html: true}}
 
-  define_layers [ :static, :services, :fall_back, :not_found ]
+  define_layers([:static, :services, :fall_back, :not_found])
 
   # In order to forward the 'themes' resource to the
   # resource service, use the following forward rule:
@@ -20,8 +21,23 @@ defmodule Dispatcher do
   #
   # Run `docker-compose restart dispatcher` after updating
   # this file.
+  match "/sessions/*path", @any do
+    Proxy.forward(conn, path, "http://login/sessions/")
+  end
 
-  match "/*_", %{ layer: :not_found } do
-    send_resp( conn, 404, "Route not found.  See config/dispatcher.ex" )
+  match "/accounts/*path", @any do
+    Proxy.forward conn, path, "http://registration/accounts/"
+  end
+
+  match "/todo-items/*path", %{layer: :services} do
+    Proxy.forward(conn, path, "http://resource/todo-items/")
+  end
+
+  match "/todo-lists/*path", %{layer: :services} do
+    Proxy.forward(conn, path, "http://resource/todo-lists/")
+  end
+
+  match "/*_", %{layer: :not_found} do
+    send_resp(conn, 404, "Route not found.  See config/dispatcher.ex")
   end
 end

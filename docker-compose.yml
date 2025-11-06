@@ -23,6 +23,11 @@ services:
     logging: *default-logging
 
   # Your extra services here
+  registration:
+    image: semtech/mu-registration-service:2.8.0
+  login:
+    image: semtech/mu-login-service:3.0.0
+
   resource:
     image: semtech/mu-cl-resources:1.26.0
     volumes:

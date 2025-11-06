@@ -9,11 +9,11 @@
 ;;;;;;;;;;;;;;;;;
 ;;; configuration
 (in-package :client)
-(setf *log-sparql-query-roundtrip* nil) ; change nil to t for logging requests to virtuoso (and the response)
+(setf *log-sparql-query-roundtrip* t) ; change nil to t for logging requests to virtuoso (and the response)
 (setf *backend* "http://triplestore:8890/sparql")
 
 (in-package :server)
-(setf *log-incoming-requests-p* nil) ; change nil to t for logging all incoming requests
+(setf *log-incoming-requests-p* t) ; change nil to t for logging all incoming requests
 
 ;;;;;;;;;;;;;;;;
 ;;; prefix types
@@ -38,6 +38,8 @@
   :session "http://mu.semte.ch/vocabularies/session/"
   :ext "http://mu.semte.ch/vocabularies/ext/"
   ;; Custom prefix URIs here, prefix casing is ignored
+  :todo "http://mu.semte.ch/vocabularies/ext/"
+  :foaf "http://xmlns.com/foaf/0.1/"
   )
 
 
@@ -50,9 +52,20 @@
 ;; specifications can be folded too.  This could help when building
 ;; indexes.
 
-(define-graph public ("http://mu.semte.ch/graphs/public")
-  (_ -> _)) ; public allows ANY TYPE -> ANY PREDICATE in the direction
-            ; of the arrow
+; (define-graph public ("http://mu.semte.ch/graphs/public")
+;   (_ -> _)) ; public allows ANY TYPE -> ANY PREDICATE in the direction
+;             ; of the arrow
+
+(define-graph todo ("http://mu.semte.ch/graphs/users/")
+  ("todo:TodoItem"
+   -> "todo:title"
+   -> "todo:completedAt"
+   -> "todo:deadline"
+   <- "foaf:made")
+  ("todo:TodoList"
+   -> "todo:title"
+   -> "todo:items"
+   <- "foaf:made"))
 
 ;; Example:
 ;; (define-graph company ("http://mu.semte.ch/graphs/companies/")
@@ -67,11 +80,26 @@
 ;;;;;;;;;;;;;
 ;; User roles
 
-(supply-allowed-group "public")
+; (supply-allowed-group "public")
+
+; (grant (read write)
+;        :to-graph public
+;        :for-allowed-group "public")
+
+(supply-allowed-group "user"
+  :query "PREFIX ext: <http://mu.semte.ch/vocabularies/ext/>
+          PREFIX todo: <http://mu.semte.ch/vocabularies/ext/>
+          PREFIX mu: <http://mu.semte.ch/vocabularies/core/>
+          PREFIX session: <http://mu.semte.ch/vocabularies/session/>
+          PREFIX account: <http://mu.semte.ch/vocabularies/account/>
+          SELECT DISTINCT ?uuid WHERE {
+            <SESSION_ID> session:account/mu:uuid ?uuid.
+          }"
+  :parameters ("uuid"))
 
 (grant (read write)
-       :to-graph public
-       :for-allowed-group "public")
+       :to-graph todo
+       :for-allowed-group "user")
 
 ;; example:
 

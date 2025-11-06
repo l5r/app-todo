@@ -32,3 +32,5 @@
 ;; by them and that it shouldn't be used for permanent URIs.
 
 (add-prefix "ext" "http://mu.semte.ch/vocabularies/ext/")
+;; Redirect todo to ext for now
+(add-prefix "todo" "http://mu.semte.ch/vocabularies/ext/")

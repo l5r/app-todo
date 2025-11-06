@@ -24,3 +24,38 @@
 
 ;; reading in the domain.json
 (read-domain-file "domain.json")
+
+(define-resource todo-item ()
+  :class (s-prefix "todo:TodoItem")
+  :properties `((:title :string ,(s-prefix "todo:title"))
+                (:completed-at :datetime,(s-prefix "todo:completedAt"))
+                (:deadline :datetime ,(s-prefix "todo:deadline")))
+  :has-one `((todo-list :via ,(s-prefix "todo:items")
+                        :inverse t
+                        :as "list")
+             (account :via ,(s-prefix "foaf:made")
+                      :inverse t
+                      :as "owner"))
+  :resource-base (s-prefix "todo:todo-item/")
+  :on-path "todo-items")
+
+(define-resource todo-list ()
+  :class (s-prefix "todo:TodoList")
+  :properties `((:title :string ,(s-prefix "todo:title")))
+  :has-one `((account :via ,(s-prefix "foaf:made")
+                      :inverse t
+                      :as "owner"))
+  :has-many `((todo-item :via ,(s-prefix "todo:items")
+                         :as "items"))
+  :resource-base (s-prefix "todo:todo-list/")
+  :on-path "todo-lists")
+
+(define-resource account ()
+  :class (s-prefix "foaf:OnlineAccount")
+  :properties `((:account-name :string ,(s-prefix "foaf:accountName")))
+  :has-many `((todo-list :via ,(s-prefix "foaf:made")
+                         :as "todo-lists")
+              (todo-item :via ,(s-prefix "foaf:made")
+                         :as "todo-items"))
+  :on-path "accounts")
+
