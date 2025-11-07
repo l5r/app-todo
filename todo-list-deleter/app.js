@@ -28,11 +28,7 @@ app.delete('/todo-lists/:todoListId', async function(req, res) {
       }
     `, {});
 
-  if (app.get('env').toLowerCase() === 'development') {
-    res.send(JSON.stringify({ result }));
-  } else {
     res.send('')
-  }
 })
 
 app.use(errorHandler);
