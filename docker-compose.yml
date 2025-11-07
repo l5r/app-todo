@@ -23,6 +23,17 @@ services:
     logging: *default-logging
 
   # Your extra services here
+  
+  todo-list-deleter:
+    image: semtech/mu-javascript-template:1.9.1
+    ports:
+      - "8888:80"
+      - "9229:9229"
+    environment:
+      NODE_ENV: "development"
+    volumes:
+      - "./todo-list-deleter/:/app"
+  
   registration:
     image: semtech/mu-registration-service:2.8.0
 

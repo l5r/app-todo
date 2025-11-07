@@ -33,6 +33,10 @@ defmodule Dispatcher do
     Proxy.forward(conn, path, "http://resource/todo-items/")
   end
 
+  delete "/todo-lists/:todo_list_id", %{layer: :services} do
+    Proxy.forward(conn, [todo_list_id], "http://todo-list-deleter/todo-lists/")
+  end
+
   match "/todo-lists/*path", %{layer: :services} do
     Proxy.forward(conn, path, "http://resource/todo-lists/")
   end

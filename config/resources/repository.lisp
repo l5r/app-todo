@@ -34,3 +34,4 @@
 (add-prefix "ext" "http://mu.semte.ch/vocabularies/ext/")
 ;; Redirect todo to ext for now
 (add-prefix "todo" "http://mu.semte.ch/vocabularies/ext/")
+(add-prefix "foaf" "http://xmlns.com/foaf/0.1/")
