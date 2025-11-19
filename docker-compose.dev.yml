@@ -5,3 +5,8 @@ services:
   triplestore:
     ports:
       - "8890:8890"
+  search:
+    environment:
+      LOG_SCOPE_SETUP: debug
+      LOG_SCOPE_INDEX_MGMT: debug
+      LOG_SCOPE_INDEXING: debug

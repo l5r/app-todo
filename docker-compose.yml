@@ -30,6 +30,8 @@ services:
       NODE_ENV: "development"
     volumes:
       - "./todo-list-deleter/:/app"
+    labels:
+      - "logging=true"
 
   todo-list-with-counts:
     image: semtech/mu-ruby-template:3.2.1
@@ -40,12 +42,41 @@ services:
       RACK_ENV: "development"
     volumes:
       - "./todo-list-with-counts/:/app"
+    labels:
+      - "logging=true"
   
   registration:
     image: semtech/mu-registration-service:2.8.0
 
   login:
     image: semtech/mu-login-service:3.0.0
+    labels:
+      - "logging=true"
+
+  file:
+    image: semtech/mu-file-service:3.4.0
+    links:
+      - database:database
+    volumes:
+      - ./data/files:/share
+    labels:
+      - "logging=true"
+
+  search:
+    image: semtech/mu-search:0.11.0
+    links:
+      - database:database
+    volumes:
+      - ./config/search:/config
+      - ../../mu-search:/app
+    labels:
+      - "logging=true"
+  elasticsearch:
+    image: semtech/mu-search-elastic-backend:1.2.0
+    volumes:
+      - ./data/elasticsearch/:/usr/share/elasticsearch/data
+    environment:
+      - discovery.type=single-node
 
   resource:
     image: semtech/mu-cl-resources:1.26.0

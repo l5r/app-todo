@@ -37,6 +37,10 @@
   :mu "http://mu.semte.ch/vocabularies/core/"
   :session "http://mu.semte.ch/vocabularies/session/"
   :ext "http://mu.semte.ch/vocabularies/ext/"
+  :nfo "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#"
+  :nie "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#"
+  :dct "http://purl.org/dc/terms/"
+  :dbpedia "http://dbpedia.org/ontology/"
   ;; Custom prefix URIs here, prefix casing is ignored
   :todo "http://mu.semte.ch/vocabularies/ext/"
   :foaf "http://xmlns.com/foaf/0.1/"
@@ -57,15 +61,20 @@
 ;             ; of the arrow
 
 (define-graph todo ("http://mu.semte.ch/graphs/users/")
+  ("nfo:FileDataObject"
+   -> _
+   <- _)
   ("todo:TodoItem"
-   -> _)
+   -> _
+   <- _)
    ; -> "rdf:type"
    ; -> "mu:uuid"
    ; -> "todo:title"
    ; -> "todo:completedAt"
    ; -> "todo:deadline")
   ("todo:TodoList"
-   -> _))
+   -> _
+   <- _))
    ; -> "rdf:type"
    ; -> "mu:uuid"
    ; -> "todo:title"

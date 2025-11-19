@@ -33,9 +33,8 @@
   :has-one `((todo-list :via ,(s-prefix "todo:items")
                         :inverse t
                         :as "list")
-             (account :via ,(s-prefix "foaf:made")
-                      :inverse t
-                      :as "owner"))
+             (file :via ,(s-prefix "todo:todoFile")
+                   :as "file"))
   :resource-base (s-url "http://todo.home.arpa/todo-items/")
   :on-path "todo-items")
 
@@ -58,4 +57,21 @@
               (todo-item :via ,(s-prefix "foaf:made")
                          :as "todo-items"))
   :on-path "accounts")
+
+(define-resource file ()
+  :class (s-prefix "nfo:FileDataObject")
+  :properties `((:name :string ,(s-prefix "nfo:fileName"))
+                (:format :string ,(s-prefix "dct:format"))
+                (:size :number ,(s-prefix "nfo:fileSize"))
+                (:extension :string ,(s-prefix "dbpedia:fileExtension"))
+                (:created :datetime ,(s-prefix "dct:created")))
+  :has-one `((file :via ,(s-prefix "nie:dataSource")
+                   :inverse t
+                   :as "download")
+             (todo-item :via ,(s-prefix "todo:todoFile")
+                        :inverse t
+                        :as "todo-item"))
+  :resource-base (s-url "http://todo.home.arpa/files/")
+  :features `(include-uri)
+  :on-path "files")
 

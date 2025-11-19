@@ -26,7 +26,27 @@ defmodule Dispatcher do
   end
 
   match "/accounts/*path", @any do
-    Proxy.forward conn, path, "http://registration/accounts/"
+    Proxy.forward(conn, path, "http://registration/accounts/")
+  end
+
+  get "/files/:id/download", %{layer: :services} do
+    Proxy.forward(conn, [], "http://file/files/" <> id <> "/download")
+  end
+
+  get "/files/*path", %{ accept: [ :json ], layer: :services } do
+    Proxy.forward conn, path, "http://resource/files/"
+  end
+
+  post "/files/*path", %{layer: :services} do
+    Proxy.forward(conn, path, "http://file/files/")
+  end
+
+  delete "/files/*path", %{accept: [:json], layer: :services} do
+    Proxy.forward(conn, path, "http://file/files/")
+  end
+
+  get "/search/*path", %{accept: [:json], layer: :services} do
+    Proxy.forward conn, path, "http://search/"
   end
 
   match "/todo-items/*path", %{layer: :services} do

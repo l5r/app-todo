@@ -1,0 +1,39 @@
+{
+  "x-persist_indexes": true,
+  "automatic_index_updates": true,
+  "types": [
+    {
+      "type": "todo-item",
+      "on_path": "todo-items",
+      "rdf_type": "http://mu.semte.ch/vocabularies/ext/TodoItem",
+      "properties": {
+        "title": "http://mu.semte.ch/vocabularies/ext/title",
+        "deadline": "http://mu.semte.ch/vocabularies/ext/deadline",
+        "completed-at": "http://mu.semte.ch/vocabularies/ext/completedAt"
+      },
+      "mappings": {
+        "properties": {
+          "title": {
+            "type": "text"
+          },
+          "deadline": {
+            "type": "date"
+          },
+          "completed-at": {
+            "type": "date"
+          }
+        }
+      }
+    }
+  ],
+  "eager_indexing_groups": [
+    [
+      {
+        "name": "user",
+        "variables": [
+          "*"
+        ]
+      }
+    ]
+  ]
+}
