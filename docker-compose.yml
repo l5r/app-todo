@@ -68,6 +68,8 @@ services:
       - database:database
     volumes:
       - ./config/search:/config
+      - ./data/files:/data
+      - ./data/search/cache:/cache
       - ../../mu-search:/app
     labels:
       - "logging=true"
@@ -77,6 +79,10 @@ services:
       - ./data/elasticsearch/:/usr/share/elasticsearch/data
     environment:
       - discovery.type=single-node
+  tika:
+    image: semtech/mu-search-tika-backend:1.0.0
+    labels:
+      - "logging=true"
 
   resource:
     image: semtech/mu-cl-resources:1.26.0

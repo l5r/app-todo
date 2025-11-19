@@ -9,7 +9,14 @@
       "properties": {
         "title": "http://mu.semte.ch/vocabularies/ext/title",
         "deadline": "http://mu.semte.ch/vocabularies/ext/deadline",
-        "completed-at": "http://mu.semte.ch/vocabularies/ext/completedAt"
+        "completed-at": "http://mu.semte.ch/vocabularies/ext/completedAt",
+        "file": {
+          "via": [
+            "http://mu.semte.ch/vocabularies/ext/todoFile",
+            "^http://www.semanticdesktop.org/ontologies/2007/01/19/nie#dataSource"
+          ],
+          "attachment_pipeline": "attachment"
+        }
       },
       "mappings": {
         "properties": {
@@ -21,6 +28,9 @@
           },
           "completed-at": {
             "type": "date"
+          },
+          "file.content": {
+            "type": "text"
           }
         }
       }
